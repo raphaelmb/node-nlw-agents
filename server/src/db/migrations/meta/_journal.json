@@ -15,6 +15,13 @@
       "when": 1752065851799,
       "tag": "0001_flawless_carnage",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752168245465,
+      "tag": "0002_mute_ego",
+      "breakpoints": true
     }
   ]
 }
