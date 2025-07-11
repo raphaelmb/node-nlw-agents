@@ -7,7 +7,7 @@ const gemini = new GoogleGenAI({
 
 const model = "gemini-2.5-flash"
 
-async function transcribeAudio(audioAsBase64: string, mimeType: string) {
+export async function transcribeAudio(audioAsBase64: string, mimeType: string) {
     const response = await gemini.models.generateContent({
         model,
         contents: [
@@ -26,4 +26,18 @@ async function transcribeAudio(audioAsBase64: string, mimeType: string) {
     if (!response.text) throw new Error("Could not convert audio")
 
     return response.text
+}
+
+export async function generateEmbeddings(text: string) {
+    const response = await gemini.models.embedContent({
+        model: "text-embedding-004",
+        contents: [{ text }],
+        config: {
+            taskType: "RETRIEVAL_DOCUMENT",
+        }
+    })
+
+    if (!response.embeddings?.[0].values) throw new Error("Could not generate embeddings")
+
+    return response.embeddings[0].values
 }
