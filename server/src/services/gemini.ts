@@ -41,3 +41,34 @@ export async function generateEmbeddings(text: string) {
 
     return response.embeddings[0].values
 }
+
+export async function generateAnswer(question: string, transcriptions: string[]) {
+    const context = transcriptions.join("\n\n")
+
+    const prompt = `
+        Based on the text below as the context, answer the question in a clear and precise way.
+        CONTEXT: ${context}
+        QUESTION: ${question}
+
+        INSTRUCTIONS:
+        - Use only information in the context;
+        - If the answer is not found in the context, simply answer that you don't have enough information to answer;
+        - Be objective, with and educational and professional tone;
+        - Use relevant parts of the context if appropriated
+        - If you are citing the context, use the term "class content"
+
+    `.trim()
+
+    const response = await gemini.models.generateContent({
+        model,
+        contents: [
+            {
+                text: prompt
+            }
+        ]
+    })
+
+    if (!response.text) throw new Error("Failed to generate response")
+
+    return response.text
+}
