@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/form'
 import { Textarea } from '@/components/ui/textarea'
 import { useCreateQuestion } from '@/http/use-create-question'
+import { fromTheme } from 'tailwind-merge'
 
 const createQuestionSchema = z.object({
   question: z
@@ -48,6 +49,8 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
     await createQuestion(data)
   }
 
+  const { isSubmitting } = form.formState
+
   return (
     <Card>
       <CardHeader>
@@ -71,6 +74,7 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
                   <FormControl>
                     <Textarea
                       className="min-h-[100px]"
+                      disabled={isSubmitting}
                       placeholder="What would you like to know?"
                       {...field}
                     />
@@ -80,7 +84,7 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
               )}
             />
 
-            <Button type="submit">Send question</Button>
+            <Button disabled={isSubmitting} type="submit">Send question</Button>
           </form>
         </Form>
       </CardContent>
